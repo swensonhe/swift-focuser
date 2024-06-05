@@ -104,20 +104,26 @@ public struct FocusModifierTextEditor<Value: FocusStateCompliant & Hashable>: Vi
                 }
                 
                 observer.onDidBeginEditing = {
-                    focusedField = equals
+                    DispatchQueue.main.async {
+                        focusedField = equals
+                    }
                 }
                 
                 if focusedField == equals {
-                    if textView.isUserInteractionEnabled {
-                        textView.becomeFirstResponder()
-                    } else {
-                        focusedField = focusedField?.next
+                    DispatchQueue.main.async {
+                        if textView.isUserInteractionEnabled {
+                            textView.becomeFirstResponder()
+                        } else {
+                            focusedField = focusedField?.next
+                        }
                     }
                 }
             }
             .onChange(of: focusedField) { focusedField in
-                if focusedField == nil {
-                    observer.ownerTextView?.resignFirstResponder()
+                DispatchQueue.main.async {
+                    if focusedField == nil {
+                        observer.ownerTextView?.resignFirstResponder()
+                    }
                 }
             }
             .onWillDisappear {

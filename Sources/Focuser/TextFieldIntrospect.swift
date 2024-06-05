@@ -92,23 +92,28 @@ public struct FocusModifier<Value: FocusStateCompliant & Hashable>: ViewModifier
                 }
                 
                 observer.onDidBeginEditing = {
-                    focusedField = equals
+                    DispatchQueue.main.async {
+                        focusedField = equals
+                    }
                 }
                 
                 observer.onReturnTap = {
-                    focusedField = focusedField?.next
-                    
-                    if focusedField == nil {
-                        textField.resignFirstResponder()
+                    DispatchQueue.main.async {
+                        focusedField = focusedField?.next
+                        
+                        if focusedField == nil {
+                            textField.resignFirstResponder()
+                        }
                     }
-                    
                 }
                 
                 if focusedField == equals {
-                    if textField.isEnabled {
-                        textField.becomeFirstResponder()
-                    } else {
-                        focusedField = focusedField?.next
+                    DispatchQueue.main.async {
+                        if textField.isEnabled {
+                            textField.becomeFirstResponder()
+                        } else {
+                            focusedField = focusedField?.next
+                        }
                     }
                 }
                 
@@ -119,8 +124,10 @@ public struct FocusModifier<Value: FocusStateCompliant & Hashable>: ViewModifier
                 }
             }
             .onChange(of: focusedField) { focusedField in
-                if focusedField == nil {
-                    observer.ownerTextField?.resignFirstResponder()
+                DispatchQueue.main.async {
+                    if focusedField == nil {
+                        observer.ownerTextField?.resignFirstResponder()
+                    }
                 }
             }
             .onWillDisappear {
