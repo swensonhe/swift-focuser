@@ -120,10 +120,8 @@ public struct FocusModifierTextEditor<Value: FocusStateCompliant & Hashable>: Vi
                 }
             }
             .onChange(of: focusedField) { focusedField in
-                DispatchQueue.main.async {
-                    if focusedField == nil {
-                        observer.ownerTextView?.resignFirstResponder()
-                    }
+                if focusedField == nil {
+                    observer.ownerTextView?.resignFirstResponder()
                 }
             }
             .onWillDisappear {
