@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -14,14 +14,16 @@ let package = Package(
             targets: ["Focuser"]),
     ],
     dependencies: [
-        .package(name: "Introspect", url: "https://github.com/siteline/SwiftUI-Introspect.git", from: "0.1.3")
+        .package(url: "https://github.com/siteline/SwiftUI-Introspect", exact: "1.1.4")
     ],
     targets: [
         .target(
             name: "Focuser",
-            dependencies: ["Introspect"]),
+            dependencies: [.product(name: "SwiftUIIntrospect", package: "SwiftUI-Introspect")]
+        ),
         .testTarget(
             name: "FocuserTests",
-            dependencies: ["Focuser"]),
+            dependencies: ["Focuser"]
+        ),
     ]
 )
